@@ -1,7 +1,4 @@
-const connection = require("../db");
-const bcrypt = require("bcryptjs");
 const Product = require("../models/Products");
-const jwt = require("jsonwebtoken");
 
 exports.createproduct = async (req, res) => {
   var product = {

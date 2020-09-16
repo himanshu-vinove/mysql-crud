@@ -15,7 +15,7 @@ exports.register = async (req, res) => {
         var customer = {
           name: req.body.name,
           email: req.body.email,
-          phone_num :req.body.phone_num,
+          phone_num: req.body.phone_num,
           password: hashedPassword,
         };
         Customer.create(customer)
@@ -99,45 +99,46 @@ exports.updatecustomer = async (req, res, next) => {
   //   newpassword = await bcrypt.hash(req.body.newpassword,10);
   try {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ["name", "email","phone_num"];
+    const allowedUpdates = ["name", "email", "phone_num", "password"];
     const isValidOperation = updates.every((update) =>
-    allowedUpdates.includes(update)
+      allowedUpdates.includes(update)
     );
-    
+
     if (!isValidOperation)
-    return res.status(400).send({ error: "Invalid Update" });
-    
+      return res.status(400).send({ error: "Invalid Update" });
     const data = {};
     CustomerId = req.params.id;
     
-    updates.forEach((update) => {
-    data[update] = req.body[update];
+    updates.forEach(async (update) => {
+      if (update === 'password') {
+        console.log('true')
+        data.password = await bcrypt.hash(req.body.password, 10);
+      } else {
+        data[update] = req.body[update];
+      }
     });
-    
+
     const customer = await Customer.findByPk(CustomerId);
     if (!customer) {
-    return res
-    .status(400)
-    .json({ status: 400, msg: "No Customer available" });
+      return res
+        .status(400)
+        .json({ status: 400, msg: "No Customer available" });
     }
-    
+
     await Customer.update(data, {
-    where: {
-      CustomerId,
-    },
+      where: {
+        CustomerId,
+      },
     });
-    
+
     res.status(200).json({
-    status: 200,
-    msg: "Customer updated",
+      status: 200,
+      msg: "Customer updated",
     });
-    } catch (error) {
+  } catch (error) {
     res.status(404).json({ error });
-    }
-    };
-
-
-
+  }
+};
 
 exports.fetchSingleUser = (req, res, next) => {
   Customer.findOne({
@@ -164,37 +165,31 @@ exports.fetchSingleUser = (req, res, next) => {
 exports.DeleteUsers = async (req, res, next) => {
   try {
     await Customer.destroy({
-    truncate: true,
+      truncate: true,
     });
-    
+
     res.status(200).json({
-    status: 200,
-    msg: "All Customers are deleted",
+      status: 200,
+      msg: "All Customers are deleted",
     });
-    } catch (error) {
-    res.status(404).json({ error });
-    }
-    };
-
-exports.deleteSingleUser = async(req, res, next) => {
-  try {
-  await Customer.destroy({
-  where: {
-    CustomerId,
-  },
-  });
-  
-  res.status(200).json({
-  status: 200,
-  msg: "Customer deleted",
-  });
   } catch (error) {
-  res.status(404).json({ error });
+    res.status(404).json({ error });
   }
-  };
+};
 
+exports.deleteSingleUser = async (req, res, next) => {
+  try {
+    await Customer.destroy({
+      where: {
+        CustomerId,
+      },
+    });
 
-
-  
-
-  
+    res.status(200).json({
+      status: 200,
+      msg: "Customer deleted",
+    });
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+};

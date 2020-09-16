@@ -1,8 +1,5 @@
-const bcrypt = require("bcryptjs");
 const Order = require("../models/order");
 const Product = require("../models/Products");
-
-const jwt = require("jsonwebtoken");
 
 exports.createOrder = async (req, res) => {
   try {
@@ -11,22 +8,22 @@ exports.createOrder = async (req, res) => {
       productProductId: req.body.productProductId,
     };
 
-    // find product by productProductId
-    //  product.productQuantity-- ??
-    //  update product where id is productProductId
     const product = await Product.findOne({
       where: {
         ProductId: req.body.productProductId,
       },
     });
-    Productcount =product.Productcount +1 ;
+    Productcount = product.Productcount + 1;
     Productquantity = product.Productquantity - 1;
 
-    await Product.update({Productquantity,Productcount}, {
-      where: {
-        ProductId: req.body.productProductId,
-      },
-    });
+    await Product.update(
+      { Productquantity, Productcount },
+      {
+        where: {
+          ProductId: req.body.productProductId,
+        },
+      }
+    );
 
     const orderCreated = await Order.create(orderData);
     res.status(201).json({
