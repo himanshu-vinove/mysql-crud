@@ -9,5 +9,17 @@ module.exports = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     }
+    // ,
+    //   totalprice:{
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false
+    //   },
+    //   totalquantity:
+    //   {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //   }
+
+    
   }
 );

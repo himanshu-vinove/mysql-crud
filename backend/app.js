@@ -52,10 +52,9 @@ app.use("/api", productRoutes);
 app.use("/api", orderRoutes);
 app.use("/api/fetch", fetchRoutes);
 
-
 db
-// .sync({ force: true })
-.sync()
+  // .sync({ force: true })
+  .sync()
   .then(
     app.listen(port, function () {
       console.log("server is running on port " + port);

@@ -12,17 +12,17 @@ exports.register = async (req, res) => {
   })
     .then((customer) => {
       if (!customer) {
-        // console.log(req.body.phone_num)
-        
         var customer = {
           name: req.body.name,
           email: req.body.email,
           phone_num: req.body.phone_num,
           password: hashedPassword,
         };
-                    if(customer.phone_num.toString().length > 10) {
-                      return res.status(400).json({msg: 'Phone Number Can\'t be Grater than 10 Characters'})
-                    }
+        if (customer.phone_num.toString().length > 10) {
+          return res
+            .status(400)
+            .json({ msg: "Phone Number Can't be Grater than 10 Characters" });
+        }
         Customer.create(customer)
           .then((customer) => {
             res.json({ msg: "customer created" });
@@ -98,7 +98,6 @@ exports.fetchUser = async (req, res, next) => {
 };
 
 exports.updatecustomer = async (req, res, next) => {
-
   try {
     const updates = Object.keys(req.body);
     const allowedUpdates = ["name", "email", "phone_num", "password"];
@@ -110,9 +109,9 @@ exports.updatecustomer = async (req, res, next) => {
       return res.status(400).send({ error: "Invalid Update" });
     const data = {};
     CustomerId = req.params.id;
-    
+
     updates.forEach(async (update) => {
-      if (update === 'password') {
+      if (update === "password") {
         data.password = await bcrypt.hash(req.body.password, 10);
       } else {
         data[update] = req.body[update];

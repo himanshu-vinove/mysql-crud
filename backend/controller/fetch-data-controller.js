@@ -17,7 +17,7 @@ exports.customerpurchasedparticularitem = async (req, res, next) => {
     }
     res.status(200).json({
       status: 200,
-      msg: "customer fetched by particular item",
+      msg: "customers fetched by particular item",
       customers: customerpurchaseditem,
     });
   } catch (error) {
