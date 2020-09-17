@@ -12,6 +12,7 @@ module.exports = sequelize.define(
     },
     product_name: {
       type: DataTypes.STRING,
+      allowNull: false
     },
     Productquantity: {
       type: DataTypes.INTEGER,
@@ -26,6 +27,7 @@ module.exports = sequelize.define(
     },
     price: {
       type: DataTypes.INTEGER,
+      allowNull: false
     }
     }
 );
