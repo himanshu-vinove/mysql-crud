@@ -54,7 +54,7 @@ app.use("/api/fetch", fetchRoutes);
 
 
 db
-//.sync({ force: true })
+// .sync({ force: true })
 .sync()
   .then(
     app.listen(port, function () {

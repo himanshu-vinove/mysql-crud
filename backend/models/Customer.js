@@ -17,8 +17,11 @@ module.exports = sequelize.define(
       type: DataTypes.STRING,
     },
     phone_num :{
-      type: DataTypes.INTEGER,
-      unique:true
+      type: DataTypes.BIGINT,
+      unique:true,
+      validate: {
+        isNumeric: true
+      }
     },
     password: {
       type: DataTypes.STRING,
